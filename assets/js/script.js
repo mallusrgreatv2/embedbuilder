@@ -336,7 +336,7 @@ addEventListener('DOMContentLoaded', () => {
         gui = guiParent.querySelector('.gui:first-of-type');
 
     editor = CodeMirror(elt => editorHolder.parentNode.replaceChild(elt, editorHolder), {
-        value: JSON.stringify(json, null, 4),
+        value: JSON.stringify(json),
         gutters: ["CodeMirror-foldgutter", "CodeMirror-lint-markers"],
         scrollbarStyle: "overlay",
         mode: "application/json",
@@ -397,7 +397,7 @@ addEventListener('DOMContentLoaded', () => {
 
     const allGood = embedObj => {
         let invalid, err;
-        let str = JSON.stringify(embedObj, null, 4)
+        let str = JSON.stringify(embedObj)
         let re = /("(?:icon_)?url": *")((?!\w+?:\/\/).+)"/g.exec(str);
 
         if (embedObj.timestamp && new Date(embedObj.timestamp).toString() === "Invalid Date") {
@@ -1148,7 +1148,7 @@ addEventListener('DOMContentLoaded', () => {
 
     editor.on('change', editor => {
         // If the editor value is not set by the user, return.
-        if (JSON.stringify(json, null, 4) === editor.getValue()) return;
+        if (JSON.stringify(json) === editor.getValue()) return;
 
         try {
             // Autofill when " is typed on new line
@@ -1245,7 +1245,7 @@ addEventListener('DOMContentLoaded', () => {
         hljs.highlightBlock(block);
 
     document.querySelector('.opt.gui').addEventListener('click', () => {
-        if (lastGuiJson && lastGuiJson !== JSON.stringify(json, null, 4))
+        if (lastGuiJson && lastGuiJson !== JSON.stringify(json))
             buildGui();
 
         lastGuiJson = false
@@ -1264,7 +1264,7 @@ addEventListener('DOMContentLoaded', () => {
             // Clicked GUI tab while a blank embed is added from GUI.
             return error(gui.querySelectorAll('.item.guiEmbedName')[emptyEmbedIndex].innerText.split(':')[0] + ' should not be empty.', '3s');
 
-        const jsonStr = JSON.stringify(json, null, 4);
+        const jsonStr = JSON.stringify(json);
         lastGuiJson = jsonStr;
 
         document.body.classList.remove('gui');
@@ -1286,7 +1286,7 @@ addEventListener('DOMContentLoaded', () => {
         buildEmbed();
         buildGui();
 
-        const jsonStr = JSON.stringify(json, null, 4);
+        const jsonStr = JSON.stringify(json);
         editor.setValue(jsonStr === '{}' ? '{\n\t\n}' : jsonStr);
 
         for (const e of document.querySelectorAll('.gui .item'))
@@ -1320,7 +1320,7 @@ addEventListener('DOMContentLoaded', () => {
         }
 
         if (e.target.closest('.item.download'))
-            return createElement({ a: { download: 'embed' + '.json', href: 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(json, null, 4)) } }).click();
+            return createElement({ a: { download: 'embed' + '.json', href: 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(json)) } }).click();
 
         const input = e.target.closest('.item')?.querySelector('input');
         if (input) input.checked = !input.checked;
@@ -1367,7 +1367,7 @@ addEventListener('DOMContentLoaded', () => {
 
             buildGui();
             buildEmbed();
-            editor.setValue(JSON.stringify(json, null, 4));
+            editor.setValue(JSON.stringify(json));
         }
 
         e.target.closest('.top-btn')?.classList.toggle('active')
@@ -1425,7 +1425,7 @@ addEventListener('DOMContentLoaded', () => {
 
     document.querySelector('.top-btn.copy').addEventListener('click', e => {
         const mark = e.target.closest('.top-btn.copy').querySelector('.mark'),
-            jsonData = JSON.stringify(json, null, 4),
+            jsonData = JSON.stringify(json),
             next = () => {
                 mark?.classList.remove('hidden');
                 mark?.previousElementSibling?.classList.add('hidden');
@@ -1533,3 +1533,4 @@ function cleanEmbed(obj, recursing = false) {
 
     return obj;
 }
+
